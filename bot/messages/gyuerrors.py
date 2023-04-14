@@ -5,7 +5,7 @@ from discord import Message
 from discord.ext.commands import Bot
 
 from bot.emoticons.gyumoticons import send_regulation_postfix_emoji
-from bot.secrets import opt_regulation_init_message_test_channel_id
+from bot.regulation_secrets import opt_regulation_init_message_test_channel_id
 
 
 async def handle_unknown_exception(bot: Bot, ctx: Message):

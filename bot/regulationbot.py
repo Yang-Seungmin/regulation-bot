@@ -11,7 +11,7 @@ from bot.gyutactoe import *
 from bot.messages.gyuerrors import send_regulation_unknown_error_message, handle_unknown_exception
 from bot.messages.gyumessages import send_regulation_dorai_message
 from bot.options import *
-from bot.secrets import opt_regulation_init_message_channel_id
+from bot.regulation_secrets import opt_regulation_init_message_channel_id
 from bot.utils import to_upper
 
 intents = discord.Intents.default()
