@@ -1,4 +1,8 @@
+import datetime
+
 from discord import User
+
+from bot.source.gyutactoedb import GyutactoeResult
 
 
 class GTTError(RuntimeError):
@@ -23,7 +27,6 @@ class PositionIsDuplicatedOtherError(GTTError):
         self.user = user
 
 
-
 class UserIsNotFullError(GTTError):
     pass
 
@@ -40,8 +43,9 @@ class GyuTacToe:
 
     def __init__(self):
         self.gyutactoe = [[None, None, None], [None, None, None], [None, None, None]]
-        self.players = []
+        self.players: list[User] = []
         self.emojies = []
+        self.record: list[tuple[int, int]] = []
 
     def enter(self, user: User, emoji):
         if self.is_all_user_entered():
@@ -74,9 +78,20 @@ class GyuTacToe:
 
         self.gyutactoe[y - 1][x - 1] = (user, self.turn)
         self.turn = (0 if self.turn == 1 else 1)
+        self.record.append((x - 1, y - 1))
         winner = self.check()
         tile = self.get_gyutactoe_tile()
         is_end = self.is_end(winner)
+
+        if is_end:
+            GyutactoeResult.create(
+                datetime=datetime.datetime.now(),
+                player1=str(self.players[0].id),
+                player2=str(self.players[1].id),
+                winner='1' if winner is self.players[0] else '2' if winner is self.players[1] else 'N',
+                record=''.join(map(lambda item: f'{item[0]}{item[1]}', self.record))
+            )
+
         return tile, winner, is_end
 
     def check(self):
@@ -107,7 +122,7 @@ class GyuTacToe:
             result += '\n'
         return result
 
-    def is_end(self, winner = None):
+    def is_end(self, winner=None):
         if winner is not None:
             return True
 

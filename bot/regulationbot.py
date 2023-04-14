@@ -8,10 +8,12 @@ from discord.ext import commands
 
 from bot.emoticons.gyumoticons import gyumoticons, gyupostfixes, send_regulation_postfix_emoji
 from bot.gyutactoe import *
+from bot.messages.gyucommands import help_commands
 from bot.messages.gyuerrors import send_regulation_unknown_error_message, handle_unknown_exception
 from bot.messages.gyumessages import send_regulation_dorai_message
 from bot.options import *
 from bot.regulation_secrets import opt_regulation_init_message_channel_id
+from bot.source.gyutactoedb import get_gtt_win_count, get_gtt_lose_count, get_gtt_draw_count
 from bot.utils import to_upper
 
 intents = discord.Intents.default()
@@ -106,13 +108,44 @@ async def gyu_gyutactoe(ctx, type="", x: int = -1, y: int = -1):
 
             if is_end:
                 if winner is not None:
-                    await ctx.send('{} 이(가) 이김'.format(winner.mention))
+                    await ctx.send('{} 님이 이김'.format(winner.mention))
                     await ctx.send('ㄹㅈㄷ')
                 else:
                     await ctx.send('미친 사람들인가')
                     await ctx.send('ㄹㅈㄷ')
                 await send_regulation_postfix_emoji(ctx)
                 gyutactoe_game = GyuTacToe()
+            return
+
+        if type == '전적':
+            win = get_gtt_win_count(ctx.author)
+            lose = get_gtt_lose_count(ctx.author)
+            draw = get_gtt_draw_count(ctx.author)
+
+            embed = discord.Embed(
+                title="{0}의 전적".format(ctx.author.name),
+                description="혼자서 한 게임은 버그라 안넣음",
+                colour=discord.Colour.red() if win < lose else discord.Colour.green()
+            )
+            embed.add_field(name="승리", value=f"{win}게임", inline=True)
+            embed.add_field(name="패배", value=f"{lose}게임", inline=True)
+            embed.add_field(name="무승부", value=f"{draw}게임", inline=True)
+            embed.add_field(name="승률", value="{:0.1f}%".format(win / (win + lose + draw) * 100), inline=False)
+            await ctx.send(embed=embed)
+            return
+
+        if type in help_commands:
+            await ctx.send(
+                '''규택토 사용법
+```
+!규택토 : 현재 규택토 상태 표시
+!규택토 참여 : 규택토 참여하기
+!규택토 위치 [1~3] [1~3]: 해당 위치에 표시하기
+!규택토 전적 : 자신의 전적 보기
+!규택토 위치 1 1 은 왼쪽 위, !규택토 위치 3 3은 오른쪽 아래에 표시
+```'''
+            )
+            await send_regulation_postfix_emoji(ctx)
             return
 
         if len(gyutactoe_game.players) == 0:
@@ -142,7 +175,7 @@ async def gyu_gyutactoe(ctx, type="", x: int = -1, y: int = -1):
         await send_regulation_postfix_emoji(ctx)
     except PositionIsDuplicatedOtherError as e:
         await ctx.send('님 머함')
-        await ctx.send('거기 {} 이(가)이 먹음'.format(e.user.mention))
+        await ctx.send('거기 {} 님이 먹음'.format(e.user.mention))
         await send_regulation_postfix_emoji(ctx)
     except UserIsNotFullError as e:
         await ctx.send('사람 더 모이면 할거임 ㅅㄱㅂ')
