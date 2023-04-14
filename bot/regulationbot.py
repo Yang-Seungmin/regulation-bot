@@ -12,7 +12,8 @@ from bot.messages.gyucommands import help_commands
 from bot.messages.gyuerrors import send_regulation_unknown_error_message, handle_unknown_exception
 from bot.messages.gyumessages import send_regulation_dorai_message
 from bot.options import *
-from bot.regulation_secrets import opt_regulation_init_message_channel_id
+from bot.regulation_secrets import opt_regulation_init_message_channel_id, opt_regulation_message_gtt_channel_id, \
+    opt_regulation_message_test_channel_id
 from bot.source.gyutactoedb import get_gtt_win_count, get_gtt_lose_count, get_gtt_draw_count
 from bot.utils import to_upper
 
@@ -85,6 +86,12 @@ async def gyu_score(ctx):
 
 @bot.command(name="규택토")
 async def gyu_gyutactoe(ctx, type="", x: int = -1, y: int = -1):
+    if ctx.channel.id not in [opt_regulation_message_gtt_channel_id, opt_regulation_message_test_channel_id]:
+        await ctx.send('저쪽가서해')
+        await ctx.send('미친사람들아')
+        await send_regulation_postfix_emoji(ctx)
+        return
+
     global gyutactoe_game
     gyutactoe_game.transparent = [e for e in ctx.guild.emojis if 'transparent' in e.name][0]
     regulation_emoji = [e for e in ctx.guild.emojis if
@@ -123,7 +130,7 @@ async def gyu_gyutactoe(ctx, type="", x: int = -1, y: int = -1):
             draw = get_gtt_draw_count(ctx.author)
 
             embed = discord.Embed(
-                title="{0}의 전적".format(ctx.author.name),
+                title="{0}의 규택토 전적".format(ctx.author.name),
                 description="혼자서 한 게임은 버그라 안넣음",
                 colour=discord.Colour.red() if win < lose else discord.Colour.green()
             )

@@ -83,7 +83,7 @@ class GyuTacToe:
         tile = self.get_gyutactoe_tile()
         is_end = self.is_end(winner)
 
-        if is_end:
+        if is_end and self.players[0] != self.players[1]:
             GyutactoeResult.create(
                 datetime=datetime.datetime.now(),
                 player1=str(self.players[0].id),

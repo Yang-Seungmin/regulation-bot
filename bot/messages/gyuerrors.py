@@ -5,11 +5,11 @@ from discord import Message
 from discord.ext.commands import Bot
 
 from bot.emoticons.gyumoticons import send_regulation_postfix_emoji
-from bot.regulation_secrets import opt_regulation_init_message_test_channel_id
+from bot.regulation_secrets import opt_regulation_message_test_channel_id
 
 
 async def handle_unknown_exception(bot: Bot, ctx: Message):
-    await bot.get_channel(opt_regulation_init_message_test_channel_id)\
+    await bot.get_channel(opt_regulation_message_test_channel_id)\
         .send(f'작성자: {ctx.author}\n내용: {ctx.content}```\n{traceback.format_exc()}\n```')
     await send_regulation_unknown_error_message(ctx)
 

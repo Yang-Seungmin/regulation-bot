@@ -17,6 +17,11 @@ regulation_bot_key = 'string' # 디스코드 봇 API Key
 opt_regulation_init_message_channel_id = int  # 규재 봇이 실행될때 부활 메시지 날릴 채팅방 id
 opt_regulation_message_test_channel_id = int  # 규재 봇 테스트 채널 id, uncaught error 메시지를 추가 출력
 opt_regulation_message_gtt_channel_id = int  # 규택토 채널 id, 규택토는 여기서만 가능
+
+db_host = 'string'
+db_user =  'string'
+db_password = 'string'
+db_name =  'string'
 ```
 
 ### Channel ID
