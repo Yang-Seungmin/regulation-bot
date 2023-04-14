@@ -185,4 +185,8 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows
 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
 bot/regulation_secrets.py
