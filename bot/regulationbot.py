@@ -129,6 +129,12 @@ async def gyu_gyutactoe(ctx, type="", x: int = -1, y: int = -1):
             lose = get_gtt_lose_count(ctx.author)
             draw = get_gtt_draw_count(ctx.author)
 
+            if win + lose + draw == 0:
+                await ctx.send("님 규택토 한판 하고 와요")
+                await ctx.send("인싸잖ㅇ..")
+                await send_regulation_postfix_emoji(ctx)
+                return
+
             embed = discord.Embed(
                 title="{0}의 규택토 전적".format(ctx.author.name),
                 description="혼자서 한 게임은 버그라 안넣음",
