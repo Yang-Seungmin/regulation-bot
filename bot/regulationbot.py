@@ -273,14 +273,14 @@ async def delete_user_messages(self, message):  # 메세지 단일 또는 다중
 
     # msg 비어있을 시
     if msg == '':
-        s_msg = await ctx.send(embed=discord.Embed(title=None, description="삭제할 메세지의 갯수를 입력해주세요.", colour=0x7289da))
+        s_msg = await ctx.send(embed=discord.Embed(title=None, description="얼마나 메세지 'regulation' 해야하는거임!", colour=0x7289da))
         await s_msg.delete(delay=3)
 
     # msg에 숫자값이 입력됬을경우
     elif int(msg) > 0:
 
         s_msg = await ctx.send(embed=discord.Embed(title=None, description=
-        "3초뒤 " + str(msg) + "개의 메세지 삭제됩니다.", colour=0x7289da))
+        "3초안에 형들 " + str(msg) + "개 채팅 다 먹어버릴거야 ㅇㅅㅇ)/", colour=0x7289da))
 
         await s_msg.delete(delay=3)
         # await asyncio.sleep(3)
@@ -289,10 +289,10 @@ async def delete_user_messages(self, message):  # 메세지 단일 또는 다중
         if che == True:
             # await asyncio.sleep(int(msg) / 5)
             s_msg = await ctx.send(embed=discord.Embed(title=None, description=
-            "메세지가 삭제되었습니다.", colour=0x7289da))
+            "맛도리군요 ㅇㅅㅇ)b", colour=0x7289da))
             await s_msg.delete(delay=3)
 
     # 양수 이외 값 입력시
     else:
-        s_msg = await ctx.send(embed=discord.Embed(title=None, description="잘못된 값이 입력되었습니다.\n 다시 입력해주세요.", colour=0x7289da))
+        s_msg = await ctx.send(embed=discord.Embed(title=None, description="꺨깔꼴... 다시 입..려..", colour=0x7289da))
         await s_msg.delete(delay=3)
