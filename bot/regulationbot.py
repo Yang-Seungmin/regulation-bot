@@ -237,3 +237,62 @@ async def gyu_seungseung(ctx):
 @bot.command(name="스스")
 async def gyu_seuseu(ctx):
     await ctx.send('몰킴')
+
+@bot.command(name="삭제")
+async def delete_user_messages(self, message):  # 메세지 단일 또는 다중 삭제
+
+    user = message.author
+    ctx = message.channel
+    che = False
+    msg = message.message.content[4:]
+
+    async def delete_message(num, info_user):  # num 갯수의 메세지 삭제 다 삭제 후 return True
+
+        counter = 0
+
+        # 메세지의 user가 명령어 호출한 유저와 같은지 확인
+        if msg.author != info_user:
+            return False
+
+        # 가져올 메세지의 조건
+        def predicate(message):
+            return not message.author.bot  # not bot message
+
+        #최근 500개의 메세지 중 삭제
+        async for msg in ctx.history(limit=500).filter(predicate):
+
+            # 메세지의 user가 명령어 호출한 유저와 같은지 확인
+            if msg.author == info_user:
+                await msg.delete(delay=0)
+                await asyncio.sleep(0.1)
+                counter += 1
+
+            # 정해진 갯수의 메세지 삭제 후
+            if counter == num:
+                return True
+
+    # msg 비어있을 시
+    if msg == '':
+        s_msg = await ctx.send(embed=discord.Embed(title=None, description="얼마나 메세지 'regulation' 해야하는거임!", colour=0x7289da))
+        await s_msg.delete(delay=3)
+
+    # msg에 숫자값이 입력됬을경우
+    elif int(msg) > 0:
+
+        s_msg = await ctx.send(embed=discord.Embed(title=None, description=
+        "3초안에 형들 " + str(msg) + "개 채팅 다 먹어버릴거야 ㅇㅅㅇ)/", colour=0x7289da))
+
+        await s_msg.delete(delay=3)
+        # await asyncio.sleep(3)
+        che = await delete_message(int(msg), user)
+
+        if che == True:
+            # await asyncio.sleep(int(msg) / 5)
+            s_msg = await ctx.send(embed=discord.Embed(title=None, description=
+            "맛도리군요 ㅇㅅㅇ)b", colour=0x7289da))
+            await s_msg.delete(delay=3)
+
+    # 양수 이외 값 입력시
+    else:
+        s_msg = await ctx.send(embed=discord.Embed(title=None, description="꺨깔꼴... 다시 입..려..", colour=0x7289da))
+        await s_msg.delete(delay=3)
