@@ -240,10 +240,9 @@ async def gyu_seuseu(ctx):
     await ctx.send('몰킴')
 
 @bot.command(name="삭제")
-async def delete_user_messages(message=''):  # 메세지 단일 또는 다중 삭제
+async def delete_user_messages(ctx, message=""):  # 메세지 단일 또는 다중 삭제
 
     user = message.author
-    ctx = message.channel
     che = False
     msg = message.message.content[4:]
 
